@@ -16,7 +16,8 @@ func (DeploymentVersion) TableName() string {
 
 func (DeploymentVersion) GetByKeyDeploymentIdAndVersion(deploymentId int, version string) *DeploymentVersion {
 	var deploymentVersion *DeploymentVersion
-	err := userDb.Where("deployment_id", deploymentId).Where("app_version", version).First(&deploymentVersion).Error
+	// Version number does not matter for us, just go off deployment ID
+	err := userDb.Where("deployment_id", deploymentId).Order("version_num desc").First(&deploymentVersion).Error
 	if err != nil {
 		return nil
 	}
